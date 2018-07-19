@@ -1,0 +1,5 @@
+FROM fluent/fluentd
+RUN sudo apt-get install build-essential
+RUN sudo apt-get install libgeoip-dev
+RUN ["gem", "install", "fluent-plugin-elasticsearch", "--no-rdoc", "--no-ri"]
+RUN ["gem", "install", "fluent-plugin-geoip",         "--no-rdoc", "--no-ri", "--version=0.8.0"]

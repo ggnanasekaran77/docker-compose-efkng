@@ -1,0 +1,53 @@
+version: '2'
+services:
+  web:
+    image: httpd
+    ports:
+      - "5000:80"
+    depends_on:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: httpd.access
+
+  nginx_8000:
+    image: ggnanasekaran77/ggnanasekaran
+    ports:
+      - "8000:80"
+      - "8443:443"
+    depends_on:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: "{{.Name}}"
+
+  nginx_9000:
+    image: ggnanasekaran77/ggnanasekaran
+    ports:
+      - "9000:80"
+      - "9443:443"
+    depends_on:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: "{{.Name}}"
+
+
+  nginxlb:
+    image: ggnanasekaran77/nginxlb
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - fluentd
+    logging:
+      driver: "json-file"
+      #options:
+      #  fluentd-address: localhost:24224
+      #  tag: "docker.{{.Name}}"
